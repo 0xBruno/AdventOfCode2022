@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -25,7 +26,7 @@ func main() {
 		fileLines = append(fileLines, fileScanner.Text())
 	}
 
-	var highestCalories int = 0
+	var allCalories []int
 	var caloricTracker int = 0
 
 	for _, line := range fileLines {
@@ -33,10 +34,8 @@ func main() {
 		calories, err := strconv.Atoi(line)
 
 		if err != nil {
-			// set the highestCalories to the tracker if it is greater
-			if caloricTracker > highestCalories {
-				highestCalories = caloricTracker
-			}
+			// add total calories per elf to allCalories slice
+			allCalories = append(allCalories, caloricTracker)
 
 			// reset the caloricTracker
 			caloricTracker = 0
@@ -45,5 +44,15 @@ func main() {
 		caloricTracker += calories
 	}
 
-	fmt.Println(highestCalories)
+	// sort
+	sort.Ints(allCalories)
+
+	var result int
+	// add last 3 elements in slice to result
+	for _, cals := range allCalories[len(allCalories)-3:] {
+		result += cals
+	}
+
+	fmt.Println(result)
+
 }
