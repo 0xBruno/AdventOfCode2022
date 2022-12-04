@@ -35,54 +35,48 @@ func main() {
 	fileScanner := bufio.NewScanner(readFile)
 	fileScanner.Split(bufio.ScanLines)
 
-	var elfGroups [][]string
 	var group []string
+	var totalScore int
 
 	for fileScanner.Scan() {
 
 		line := fileScanner.Text()
-		if len(group) == 3 {
-			elfGroups = append(elfGroups, group)
-			group = nil
-		}
-
 		group = append(group, line)
 
-	}
-	// add the last group from the loop
-	// to the slice
-	elfGroups = append(elfGroups, group)
+		if len(group) == 3 {
 
-	var totalScore int
+			freqTracker := make(map[string]int)
 
-	for _, ruckGroup := range elfGroups {
-		freqTracker := make(map[string]int)
+			for _, ruck := range group {
+				itemTracker := make(map[string]int32)
 
-		fmt.Println("[RUCKGROUP]")
-		for _, ruck := range ruckGroup {
-			itemTracker := make(map[string]int32)
-			fmt.Println("[RUCK] ", ruck)
-			for _, item := range ruck {
-				// Count the item
-				itemTracker[string(item)] = 1
+				for _, item := range ruck {
+					// Count the item
+					itemTracker[string(item)] = 1
+
+				}
+
+				for item, _ := range itemTracker {
+					freqTracker[item] += 1
+				}
 
 			}
 
-			for item, _ := range itemTracker {
-				freqTracker[item] += 1
+			for item, occurrences := range freqTracker {
+				// does the item show up in all rucks?
+				if occurrences == 3 {
+					fmt.Println("COMMON ITEM: ", item, " GROUP: ", group)
+					totalScore += pointsMap[item]
+				}
 			}
+
+			// reset the group
+			group = nil
 
 		}
 
-		for item, occurrences := range freqTracker {
-			// does the item show up in all rucks?
-			if occurrences == 3 {
-				totalScore += pointsMap[item]
-			}
-		}
-
 	}
 
-	fmt.Println(totalScore)
+	fmt.Println("TOTAL SCORE: ", totalScore)
 
 }
