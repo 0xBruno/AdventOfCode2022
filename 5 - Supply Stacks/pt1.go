@@ -80,6 +80,7 @@ func (crane *CargoCrane) Rearrange(stacks []SupplyStack, instructions []Instruct
 		toStack = stackMap[instruction.to]
 
 		for i := instruction.amount; i > 0; i-- {
+			crane.ops += 1
 			var poppedCrate rune
 			fmt.Printf("Executing instruction: move %d from %d to %d\n",
 				instruction.amount,
@@ -149,6 +150,7 @@ func main() {
 
 	organizedStacks := crane.Rearrange(supplyStacks, instructions)
 	fmt.Println("[*] Stacks are reorganized!")
+	fmt.Printf("[*] %d operations performed!\n", crane.ops)
 
 	topOfStacks(organizedStacks)
 
