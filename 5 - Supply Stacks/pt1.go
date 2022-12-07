@@ -52,16 +52,18 @@ func NewCargoCrane() *CargoCrane {
 func (crane *CargoCrane) Rearrange(stacks []SupplyStack, instructions []Instruction) []SupplyStack {
 	/*
 		STACKMAP structure
-		{ <stack> : <stack>}
+		{ <stack.id> : <stack>[]rune}
 
 		basic algo pseudocode.
 		With the stackMap, lookups for a specific stack are easier,
 		then just get the amount and append it to the instruction.to
 		one at a time
 
-		stackMap[instruction.from]
-		stackMap[instruction.from][instruction.amount]
-		stackMap[instruction.to] := append(stackMap[instruction.to], amount)
+		fromStack := stackMap[instruction.from]
+		toStack   := stackMap[instruction.to]
+		amount    := instruction.amount
+
+		do the op
 	*/
 
 	// 1. create the internal stackMap
