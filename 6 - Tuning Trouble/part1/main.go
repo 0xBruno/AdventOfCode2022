@@ -17,13 +17,13 @@ func main() {
 	for i, _ := range dataStream {
 
 		// bounds check
-		if i >= len(dataStream)-4 {
+		if i >= len(dataStream)-14 {
 			break
 		}
 
-		chunk := dataStream[i : i+4]
+		chunk := dataStream[i : i+14]
 		repeatsFlag := false
-		startOfPacketMarker := i + 4 // is inclusive of the chunk
+		startOfPacketMarker := i + 14 // is inclusive of the chunk
 
 		for _, i := range chunk {
 			if strings.Count(string(chunk), string(i)) > 1 {
